@@ -5,6 +5,10 @@ __pycache__/
 
 # Results
 results/
+processed_results/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
 
 # pixi
 #   Similar to Pipfile.lock, it is generally recommended to include pixi.lock in version control.
