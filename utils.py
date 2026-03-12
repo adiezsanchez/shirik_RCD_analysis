@@ -1,7 +1,6 @@
 from pathlib import Path
 import nd2
 import numpy as np
-from skimage.segmentation import clear_border
 
 def list_images (directory_path, format=None):
 
@@ -41,21 +40,11 @@ def read_image (image, log=True):
 
     return img, filename
 
-def remove_border_cells (cell_labels, nuclei_remapped):
-
-    # Remove cell labels touching the image border
-    cell_labels = clear_border(cell_labels)
-
-    # Remove corresponding nuclei
-    nuclei_remapped[~np.isin(nuclei_remapped, np.unique(cell_labels))] = 0
-
-    return cell_labels, nuclei_remapped
-
 def extract_img_metadata (img_filepath, verbose = False):
     
     # Extract image metadata from filename
-    field_of_view = Path(img_filepath).stem.split("f")[1]
-    well_id = Path(img_filepath).stem.split("f")[0]
+    field_of_view = int(Path(img_filepath).stem.split("_")[5].split("Pos")[1])
+    well_id = Path(img_filepath).stem.split("_")[4].split("Well")[1]
 
     # Create a dictionary containing all image descriptors
     descriptor_dict = {"well_id": well_id, "FOV": field_of_view}
