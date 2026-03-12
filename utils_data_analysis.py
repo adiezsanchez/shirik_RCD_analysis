@@ -44,7 +44,7 @@ def plot_plate_view(df, column_name, title, label, save_dir, fmt=3, display=True
     # --- Save plot ---
     save_dir_full = f"{save_dir}/plate_view"
     os.makedirs(save_dir_full, exist_ok=True)
-    save_path = os.path.join(save_dir_full, f"{title}_{column_name}.png")
+    save_path = os.path.join(save_dir_full, f"{column_name}.png")
     plt.savefig(save_path, dpi=300, bbox_inches="tight")
 
     if display:
