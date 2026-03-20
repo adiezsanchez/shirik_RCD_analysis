@@ -70,15 +70,25 @@ def read_image (image, log=True):
 
 def extract_img_metadata (img_filepath, verbose = False):
     
-    # Extract image metadata from filename
-    field_of_view = int(Path(img_filepath).stem.split("_")[5].split("Pos")[1])
-    well_id = Path(img_filepath).stem.split("_")[4].split("Well")[1]
+    try:
+        # Extract image metadata from filename
+        field_of_view = int(Path(img_filepath).stem.split("_")[5].split("Pos")[1])
+        well_id = Path(img_filepath).stem.split("_")[4].split("Well")[1]
+
+        if verbose:
+            print(f"Visualizing well: {well_id}, FOV: {field_of_view}")
+
+    except IndexError:
+        # In case file naming convention has changed extract filename and extract well_id and field_of_view later
+        if verbose:
+            print(f"File naming convention has changed, storing filename...")
+
+        field_of_view = Path(img_filepath).stem
+        well_id = Path(img_filepath).stem
 
     # Create a dictionary containing all image descriptors
     descriptor_dict = {"well_id": well_id, "FOV": field_of_view}
 
-    if verbose:
-
-        print(f"Visualizing well: {well_id}, FOV: {field_of_view}")
+    
 
     return descriptor_dict
