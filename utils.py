@@ -17,6 +17,34 @@ def list_images (directory_path, format=None):
 
     return images
 
+def check_marker_metadata_match(images, markers):
+    """
+    For each ND2 path, verify every (name, index) in markers appears in file metadata.
+    Also prints details about any marker(s) not found in a file.
+    """
+    expected = set(markers)
+    all_match = True
+    for img_path in images:
+        with nd2.ND2File(img_path) as ndfile:
+            meta_pairs = {
+                (ch.channel.name, ch.channel.index)
+                for ch in ndfile.metadata.channels
+            }
+        missing = expected - meta_pairs
+        if not missing:
+            pass
+        else:
+            all_match = False
+            print(
+                f"Channels definition (marker variable) does not match metadata for file {Path(img_path).name}"
+            )
+            print(f"The following user-defined marker(s) do not match file metadata: {missing}")
+
+    if all_match:
+        print("All user-defined markers match image metadata (OCs)")
+
+    return all_match
+
 def read_image (image, log=True):
     """Read raw image microscope files (.nd2), apply downsampling if needed and return filename and a numpy array"""
 
