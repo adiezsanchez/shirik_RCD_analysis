@@ -4,19 +4,37 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+
+def parse_well_row_col(well):
+    """
+    Parse a well identifier into row letter (A–H) and column (1–12).
+
+    First tries plain plate IDs (entire string), e.g. ``B2``, ``H12``.
+    If that fails, searches for ``Well<Row><Col>`` before a non-digit
+    (e.g. ``...WellB2_after4h_...``), avoiding ``\\b`` after digits when
+    the next character is ``_`` (underscore is a word char in Python regex).
+    """
+    s = str(well).strip()
+    m = re.fullmatch(r"([A-H])(\d{1,2})", s)
+    if m:
+        return m.group(1), int(m.group(2))
+    m = re.search(r"Well([A-H])(\d{1,2})(?=[^\d]|$)", s)
+    if m:
+        return m.group(1), int(m.group(2))
+    return None, None
+
+
 def plot_plate_view(df, column_name, title, label, save_dir, fmt=3, display=True, cmap="magma"):
     # --- Parse well_id into row (A–H) and column (1–12) ---
-    def split_well_id(well):
-        match = re.match(r"([A-H])(\d{1,2})", str(well))
-        if match:
-            row, col = match.groups()
-            return row, int(col)
-        return None, None
+    df[["row", "col"]] = df["well_id"].apply(
+        lambda x: pd.Series(parse_well_row_col(x))
+    )
+    df = df.dropna(subset=["row", "col"])
 
-    df[["row", "col"]] = df["well_id"].apply(lambda x: pd.Series(split_well_id(x)))
-
-    # --- Pivot into 96-well plate layout ---
-    plate_matrix = df.pivot(index="row", columns="col", values=column_name)
+    # --- One matrix cell per well; mean if multiple rows share the same well (e.g. Pos013 + Pos014) ---
+    plate_matrix = df.pivot_table(
+        index="row", columns="col", values=column_name, aggfunc="mean"
+    )
 
     # Reindex rows and columns to enforce full plate structure
     rows = list("ABCDEFGH")
