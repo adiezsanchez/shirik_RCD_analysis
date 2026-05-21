@@ -7,6 +7,15 @@ __pycache__/
 results/
 processed_results/
 
+# Data
+data/
+training_data/
+train_dir/
+test_dir/
+
+# Fine-tuned model
+models/
+
 # Jupyter checkpoints
 .ipynb_checkpoints/
 

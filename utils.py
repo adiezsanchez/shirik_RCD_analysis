@@ -1,6 +1,8 @@
 from pathlib import Path
 import nd2
 import numpy as np
+from scipy.ndimage import binary_fill_holes
+from skimage.measure import regionprops
 
 def list_images (directory_path, format=None):
 
@@ -89,6 +91,38 @@ def extract_img_metadata (img_filepath, verbose = False):
     # Create a dictionary containing all image descriptors
     descriptor_dict = {"well_id": well_id, "FOV": field_of_view}
 
-    
-
     return descriptor_dict
+
+def fill_label_holes(lbl_img, **kwargs):
+    """Fill holes in label image."""
+
+    def grow(sl, interior):
+        return tuple(
+            slice(s.start - int(w[0]), s.stop + int(w[1]))
+            for s, w in zip(sl, interior)
+        )
+
+    def shrink(interior):
+        return tuple(
+            slice(int(w[0]), (-1 if w[1] else None))
+            for w in interior
+        )
+
+    objects = regionprops(lbl_img)
+
+    lbl_img_filled = np.zeros_like(lbl_img)
+
+    for o in objects:
+        sl = o.slice
+        interior = [
+            (s.start > 0, s.stop < sz)
+            for s, sz in zip(sl, lbl_img.shape)
+        ]
+
+        shrink_slice = shrink(interior)
+        grown_mask = lbl_img[grow(sl, interior)] == o.label
+        filled_mask = binary_fill_holes(grown_mask, **kwargs)[shrink_slice]
+
+        lbl_img_filled[sl][filled_mask] = o.label
+
+    return lbl_img_filled
