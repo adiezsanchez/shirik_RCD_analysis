@@ -24,7 +24,7 @@ def parse_well_row_col(well):
     return None, None
 
 
-def plot_plate_view(df, column_name, title, label, save_dir, fmt=3, display=True, cmap="magma"):
+def plot_plate_view(df, column_name, title, label, save_dir, fmt=3, display=True, cmap="magma", save_name=None):
     # --- Parse well_id into row (A–H) and column (1–12) ---
     df[["row", "col"]] = df["well_id"].apply(
         lambda x: pd.Series(parse_well_row_col(x))
@@ -62,7 +62,8 @@ def plot_plate_view(df, column_name, title, label, save_dir, fmt=3, display=True
     # --- Save plot ---
     save_dir_full = f"{save_dir}/plate_view"
     os.makedirs(save_dir_full, exist_ok=True)
-    save_path = os.path.join(save_dir_full, f"{column_name}.png")
+    filename = save_name if save_name is not None else f"{column_name}.png"
+    save_path = os.path.join(save_dir_full, filename)
     plt.savefig(save_path, dpi=300, bbox_inches="tight")
 
     if display:
@@ -80,4 +81,25 @@ def get_1st_99th_percentile(series):
     p99 = series.quantile(0.99)
     return (p1, p99)
 
+
+def extract_well_id_and_timepoint(df, filename_col="filename"):
+    """
+    Parse ``well_id`` and ``timepoint`` from filename strings and insert them
+    as columns immediately after ``filename_col``.
+
+    Expected patterns (e.g. ``..._WellB2_after4h_Pos``, ``..._WellE12_after24h_Pos001``):
+    - well_id: letter + 1–2 digits between ``Well`` and ``_``
+    - timepoint: integer hours between ``after`` and ``h_``
+    """
+    out = df.copy()
+    filenames = out[filename_col].astype(str)
+
+    well_ids = filenames.str.extract(r"Well([A-Za-z]\d{1,2})_", expand=False)
+    timepoints = filenames.str.extract(r"after(\d+)h_", expand=False)
+    timepoints = pd.to_numeric(timepoints, errors="coerce").astype("Int64")
+
+    insert_at = out.columns.get_loc(filename_col) + 1
+    out.insert(insert_at, "well_id", well_ids)
+    out.insert(insert_at + 1, "timepoint", timepoints)
+    return out
 
