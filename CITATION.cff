@@ -15,6 +15,6 @@ license: BSD-3-Clause
 repository-code: "https://github.com/adiezsanchez/shirik_RCD_analysis"
 url: "https://github.com/adiezsanchez/shirik_RCD_analysis"
 # version, doi, and date-released: add after the first formal release / Zenodo deposition
-# version: X.Y.Z
-# doi: 10.5281/zenodo.XXXXXXX
-# date-released: YYYY-MM-DD
+version: 1.0.0
+doi: 10.5281/zenodo.21916395
+date-released: 2026-08-13

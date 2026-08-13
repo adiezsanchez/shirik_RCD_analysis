@@ -1,6 +1,6 @@
 # shirik_RCD_analysis
 
-[![DOI](https://img.shields.io/badge/DOI-10.5281/zenodo.XXXXXXX-blue.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
+[![DOI](https://img.shields.io/badge/DOI-10.5281/zenodo.21916394-blue.svg)](https://doi.org/10.5281/zenodo.21916394)
 
 CellposeSAM-mediated brightfield cell segmentation and intensity/morphology feature extraction for RCD (e.g. single-cell) analysis. The pipeline runs on ND2 images, outputs per-cell morphology and marker intensity tables, and supports batch processing and plate-level visualization.
 
@@ -108,16 +108,14 @@ If you use this pipeline to analyze your bioimage data, you can include it in yo
 
 - For APA and BibTeX, scroll to the top of this repository page, above the Release section, and under **About** click **Cite this repository**.
 
-- For APA, Harvard, MLA, Vancouver, Chicago, and IEEE styles, visit the Zenodo record once available (link and DOI badge below are **placeholders until deposition**) and use the **Citation** section in the right panel.
+- For APA, Harvard, MLA, Vancouver, Chicago, and IEEE styles, visit the Zenodo record (see DOI badge below) and use the **Citation** section in the right panel.
 
-  Placeholder DOI / badge (replace after Zenodo deposition):
-
-  [![DOI](https://img.shields.io/badge/DOI-10.5281/zenodo.XXXXXXX-blue.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
+  [![DOI](https://img.shields.io/badge/DOI-10.5281/zenodo.21916394-blue.svg)](https://doi.org/10.5281/zenodo.21916394)
 
   Example APA citation (update author, title, version, year, and DOI after deposition):
 
   ```
-  Díez-Sánchez, A. (2026). shirik_RCD_analysis: CellposeSAM RCD and Mtb infection analysis pipeline (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.XXXXXXX
+  Díez-Sánchez, A. (2026). shirik_RCD_analysis: CellposeSAM RCD and Mtb infection analysis pipeline (Version v1.0.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.21916395
   ```
 
 ---
