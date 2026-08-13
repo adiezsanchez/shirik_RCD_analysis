@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - family-names: "Díez-Sánchez"
+    given-names: "Alberto"
+    orcid: "https://orcid.org/0000-0001-5146-3089"
+title: "shirik_RCD_analysis: CellposeSAM RCD and Mtb infection analysis pipeline"
+abstract: >-
+  CellposeSAM-mediated brightfield cell segmentation and intensity/morphology
+  feature extraction for RCD (single-cell) analysis on ND2 images, with an
+  infection pipeline for Mycobacterium (Mtb) segmentation, per-cell infection
+  status, bacterial load, batch processing, and plate-level visualization.
+license: BSD-3-Clause
+repository-code: "https://github.com/adiezsanchez/shirik_RCD_analysis"
+url: "https://github.com/adiezsanchez/shirik_RCD_analysis"
+# version, doi, and date-released: add after the first formal release / Zenodo deposition
+# version: X.Y.Z
+# doi: 10.5281/zenodo.XXXXXXX
+# date-released: YYYY-MM-DD
