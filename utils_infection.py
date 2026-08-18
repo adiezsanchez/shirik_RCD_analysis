@@ -26,7 +26,7 @@ def detect_infected_cells(img, mtb_segmenter, cell_labels, mtb_channel, filename
 
         infected_cells = len(np.unique(infected_cells_array)) - (0 in infected_cells_array)
         non_infected_cells = len(np.unique(non_infected_cells_array)) - (0 in non_infected_cells_array)
-        total_cells = cell_labels.max()
+        total_cells = int(np.unique(cell_labels[cell_labels != 0]).size)
 
         # Calculate percentage of infected cells 
         perc_inf_cells = round(infected_cells / total_cells * 100, 2) if total_cells > 0 else 0
