@@ -47,22 +47,27 @@ def check_marker_metadata_match(images, markers):
 
     return all_match
 
-def read_image (image, log=True):
-    """Read raw image microscope files (.nd2), apply downsampling if needed and return filename and a numpy array"""
+def read_image(image, log=True):
+    """
+    Read raw image microscope files (.nd2 or .tif), 
+    apply downsampling if needed and return filename and a numpy array.
+    """
+    from tifffile import imread as tif_imread
 
     # Read path storing raw image and extract filename
     file_path = Path(image)
     filename = file_path.stem
 
-    # Extract file extension
-    extension = file_path.suffix
+    # Extract file extension and make lowercase for robustness
+    extension = file_path.suffix.lower()
 
     if extension == ".nd2":
         # Read stack from .nd2 (z, ch, x, y) or (ch, x, y)
         img = nd2.imread(image)
-        
+    elif extension in [".tif", ".tiff"]:
+        img = tif_imread(image)
     else:
-        print ("Implement new file reader")
+        raise ValueError(f"Unsupported file extension: {extension}")
 
     if log:
         # Feedback for researcher
