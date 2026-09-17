@@ -3,7 +3,7 @@ import pandas as pd
 from skimage.measure import regionprops_table
 import pyclesperanto_prototype as cle
 
-def detect_infected_cells(img, mtb_segmenter, cell_labels, mtb_channel, filename, infection_stats):
+def detect_infected_cells(img, mtb_segmenter, cell_labels, mtb_channel, filename, infection_stats, position=None):
         """Detect infected cells"""
         print("\nDetecting infected cells...")
 
@@ -37,11 +37,15 @@ def detect_infected_cells(img, mtb_segmenter, cell_labels, mtb_channel, filename
         # Create a dictionary containing all extracted info per image
         stats_dict = {
                     "filename": filename,
+        }
+        if position is not None:
+            stats_dict["position"] = position
+        stats_dict.update({
                     "total_nr_cells": total_cells,
                     "infected_cells": infected_cells,
                     "non-infected_cells": non_infected_cells,
                     "%_inf_cells": perc_inf_cells,
-        }
+        })
 
         # Append the current data point to the stats_list
         infection_stats.append(stats_dict)
