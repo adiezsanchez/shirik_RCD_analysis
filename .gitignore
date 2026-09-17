@@ -14,7 +14,7 @@ train_dir/
 test_dir/
 
 # Fine-tuned model
-models/
+models/CPSAM_shirik_ft
 
 # Jupyter checkpoints
 .ipynb_checkpoints/
