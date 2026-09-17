@@ -103,3 +103,20 @@ def extract_well_id_and_timepoint(df, filename_col="filename"):
     out.insert(insert_at + 1, "timepoint", timepoints)
     return out
 
+def extract_well_id(df, filename_col="filename"):
+    """
+    Parse ``well_id`` from filename strings and insert it
+    as a column immediately after ``filename_col``.
+
+    Expected pattern (e.g. ``..._WellB2_after4h_Pos``, ``..._WellE12_after24h_Pos001``):
+    - well_id: letter + 1–2 digits between ``Well`` and ``_``
+    """
+    out = df.copy()
+    filenames = out[filename_col].astype(str)
+
+    well_ids = filenames.str.extract(r"Well([A-Za-z]\d{1,2})_", expand=False)
+
+    insert_at = out.columns.get_loc(filename_col) + 1
+    out.insert(insert_at, "well_id", well_ids)
+    return out
+
