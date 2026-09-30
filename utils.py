@@ -65,7 +65,10 @@ def read_image(image, log=True):
         # Read stack from .nd2 (z, ch, x, y) or (ch, x, y)
         img = nd2.imread(image)
     elif extension in [".tif", ".tiff"]:
-        img = tif_imread(image)
+        # is_ome=False: some exporters write OME metadata that claims more
+        # frames/pages than exist (e.g. "expected 2 frames, got 1"), which
+        # makes the default tifffile.imread raise IndexError.
+        img = tif_imread(image, is_ome=False)
     else:
         raise ValueError(f"Unsupported file extension: {extension}")
 
